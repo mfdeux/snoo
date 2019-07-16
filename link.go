@@ -88,6 +88,16 @@ func (c *Client) DeleteLink(linkID string) error {
 	return c.deleteThing(fmt.Sprintf("%s_%s", linkType, linkID))
 }
 
+// VoteOnLink deletes a link submitted by the currently authenticated user. Requires the 'edit' OAuth scope.
+func (c *Client) VoteOnLink(linkID string, direction int) error {
+	return c.voteOnThing(fmt.Sprintf("%s_%s", linkType, linkID), direction)
+}
+
+// SaveLink saves the given link. Requires the 'submit' OAuth scope.
+func (c *Client) SaveLink(linkID string, category string) error {
+	return c.saveThing(fmt.Sprintf("%s_%s", linkType, linkID), category)
+}
+
 // EditLinkText edits the text of a self post by the currently authenticated user. Requires the 'edit' OAuth scope.
 func (c *Client) EditLinkText(linkID string, text string) error {
 	return c.editThingText(fmt.Sprintf("%s_%s", linkType, linkID), text)

@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-// Comment is a response to a link or another comment.
+// Comment is a response to a submission or another comment.
 type Comment struct {
 	ApprovedBy          interface{}   `json:"approved_by"`
 	Archived            bool          `json:"archived"`
@@ -68,4 +68,14 @@ func (c *Client) GetLinkComments(linkID string) ([]*Comment, error) {
 // ReplyToComment creates a reply to the given comment. Requires the 'submit' OAuth scope.
 func (c *Client) ReplyToComment(commentID string, text string) error {
 	return c.commentOnThing(fmt.Sprintf("%s_%s", commentType, commentID), text)
+}
+
+// VoteOnComment creates a reply to the given comment. Requires the 'submit' OAuth scope.
+func (c *Client) VoteOnComment(commentID string, direction int) error {
+	return c.voteOnThing(fmt.Sprintf("%s_%s", commentType, commentID), direction)
+}
+
+// SaveComment saves the given comment. Requires the 'submit' OAuth scope.
+func (c *Client) SaveComment(commentID string, category string) error {
+	return c.saveThing(fmt.Sprintf("%s_%s", commentType, commentID), category)
 }

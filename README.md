@@ -15,7 +15,7 @@ Many endpoints in the Reddit API require OAuth2 authentication to access. To get
 ```Go
 package main
 
-import(
+import (
   "fmt"
   "github.com/mfdeux/snoo"
 )
