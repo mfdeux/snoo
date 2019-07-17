@@ -19,12 +19,12 @@ type Link struct {
 	BannedBy            string        `json:"banned_by"`
 	Clicked             bool          `json:"clicked"`
 	ContestMode         bool          `json:"contest_mode"`
-	Created             int           `json:"created"`
-	CreatedUtc          int           `json:"created_utc"`
+	Created             ISODate       `json:"created"`
+	CreatedUTC          ISODate       `json:"created_utc"`
 	Distinguished       string        `json:"distinguished"`
 	Domain              string        `json:"domain"`
 	Downs               int           `json:"downs"`
-	Edited              bool          `json:"edited"`
+	Edited              NumBool       `json:"edited"`
 	Gilded              int           `json:"gilded"`
 	Hidden              bool          `json:"hidden"`
 	HideScore           bool          `json:"hide_score"`
@@ -104,17 +104,17 @@ func (c *Client) EditLinkText(linkID string, text string) error {
 }
 
 // GetHotLinks retrieves a listing of hot links.
-func (c *Client) GetHotLinks(subreddit string) ([]*Link, error) {
+func (c *Client) GetHotLinks(subreddit string) ([]Link, error) {
 	return c.getLinks(subreddit, "hot")
 }
 
 // GetNewLinks retrieves a listing of new links.
-func (c *Client) GetNewLinks(subreddit string) ([]*Link, error) {
+func (c *Client) GetNewLinks(subreddit string) ([]Link, error) {
 	return c.getLinks(subreddit, "new")
 }
 
 // GetTopLinks retrieves a listing of top links.
-func (c *Client) GetTopLinks(subreddit string) ([]*Link, error) {
+func (c *Client) GetTopLinks(subreddit string) ([]Link, error) {
 	return c.getLinks(subreddit, "top")
 }
 
@@ -144,7 +144,7 @@ func (c *Client) HideLink(linkID string) error {
 	return nil
 }
 
-func (c *Client) getLinks(subreddit string, sort string) ([]*Link, error) {
+func (c *Client) getLinks(subreddit string, sort string) ([]Link, error) {
 	url := fmt.Sprintf("%s/r/%s/%s.json", baseURL, subreddit, sort)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -165,9 +165,9 @@ func (c *Client) getLinks(subreddit string, sort string) ([]*Link, error) {
 		return nil, err
 	}
 
-	var links []*Link
+	var links []Link
 	for _, link := range result.Data.Children {
-		links = append(links, &link.Data)
+		links = append(links, link.Data)
 	}
 
 	return links, nil

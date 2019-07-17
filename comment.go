@@ -16,7 +16,7 @@ type Comment struct {
 	BodyHTML            string        `json:"body_html"`
 	Controversiality    int           `json:"controversiality"`
 	Created             int           `json:"created"`
-	CreatedUtc          int           `json:"created_utc"`
+	CreatedUTC          int           `json:"created_utc"`
 	Distinguished       interface{}   `json:"distinguished"`
 	Downs               int           `json:"downs"`
 	Edited              bool          `json:"edited"`

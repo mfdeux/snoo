@@ -14,7 +14,7 @@ type Subreddit struct {
 	CollapseDeletedComments bool   `json:"collapse_deleted_comments"`
 	CommentScoreHideMins    int    `json:"comment_score_hide_mins"`
 	Created                 int    `json:"created"`
-	CreatedUtc              int    `json:"created_utc"`
+	CreatedUTC              int    `json:"created_utc"`
 	Description             string `json:"description"`
 	DescriptionHTML         string `json:"description_html"`
 	DisplayName             string `json:"display_name"`

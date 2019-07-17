@@ -11,7 +11,7 @@ type Message struct {
 	BodyHTML         string      `json:"body_html"`
 	Context          string      `json:"context"`
 	Created          int         `json:"created"`
-	CreatedUtc       int         `json:"created_utc"`
+	CreatedUTC       int         `json:"created_utc"`
 	Dest             string      `json:"dest"`
 	Distinguished    string      `json:"distinguished"`
 	FirstMessage     interface{} `json:"first_message"`

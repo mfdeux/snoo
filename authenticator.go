@@ -137,3 +137,5 @@ func (a *Authenticator) GetAuthClient(token *oauth2.Token) *Client {
 		userAgent: a.userAgent,
 	}
 }
+
+// TODO: make already authenticated

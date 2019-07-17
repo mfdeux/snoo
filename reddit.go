@@ -7,17 +7,41 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"time"
 )
 
+func newHTTPClient(timeout int) *http.Client {
+	return &http.Client{
+		Timeout: time.Duration(timeout) * time.Second,
+	}
+}
+
+func newHTTPClientWithProxy(timeout int, proxyURL string) (*http.Client, error) {
+	parsedProxyURL, err := url.Parse(proxyURL)
+	if err != nil {
+		return nil, err
+	}
+	transport := &http.Transport{
+		Proxy: http.ProxyURL(parsedProxyURL),
+	}
+	netClient := &http.Client{
+		Timeout:   time.Duration(timeout) * time.Second,
+		Transport: transport,
+	}
+	return netClient, nil
+}
+
 const (
-	baseAuthURL = "https://oauth.reddit.com"
-	baseURL     = "http://reddit.com"
+	baseAuthURL string = "https://oauth.reddit.com"
+	baseURL     string = "http://reddit.com"
 	// UpVote is an upvote for a submission or comment
-	UpVote = 1
+	UpVote int = 1
 	// DownVote is an upvote for a submission or comment
-	DownVote = -1
+	DownVote int = -1
 	// NoVote is no vote for a submission or comment
-	NoVote = 0
+	NoVote int = 0
+	// HTTPTimeout in seconds
+	HTTPTimeout int = 5
 )
 
 // Client is the client for interacting with the Reddit API.
@@ -26,9 +50,36 @@ type Client struct {
 	userAgent string
 }
 
-// NoAuthClient is the unauthenticated client for interacting with the Reddit API.
-var NoAuthClient = &Client{
-	http: new(http.Client),
+func NewPublicClient(userAgent string) *Client {
+	httpClient := newHTTPClient(HTTPTimeout)
+	return &Client{
+		http:      httpClient,
+		userAgent: userAgent,
+	}
+}
+
+func NewPublicClientWithProxy(userAgent string, proxyURL string) (*Client, error) {
+	httpClient, err := newHTTPClientWithProxy(HTTPTimeout, proxyURL)
+	return &Client{
+		http:      httpClient,
+		userAgent: userAgent,
+	}, err
+}
+
+func NewPreAuthorizedClient(accessKey, refreshKey, userAgent string) *Client {
+	httpClient := newHTTPClient(HTTPTimeout)
+	return &Client{
+		http:      httpClient,
+		userAgent: userAgent,
+	}
+}
+
+func NewPreAuthorizedClientWithProxy(accessKey, refreshKey, userAgent, proxyURL string) (*Client, error) {
+	httpClient, err := newHTTPClientWithProxy(HTTPTimeout, proxyURL)
+	return &Client{
+		http:      httpClient,
+		userAgent: userAgent,
+	}, err
 }
 
 func (c *Client) commentOnThing(thingID string, text string) error {

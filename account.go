@@ -10,7 +10,7 @@ import (
 type Account struct {
 	CommentKarma int     `json:"comment_karma"`
 	Created      float32 `json:"created"`
-	CreatedUtc   float32 `json:"created_utc"`
+	CreatedUTC   float32 `json:"created_utc"`
 	Features     struct {
 		ActivityServiceRead    bool `json:"activity_service_read"`
 		ActivityServiceWrite   bool `json:"activity_service_write"`
